@@ -15,12 +15,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
       - name: Install dependencies & PyInstaller (app)
         working-directory: app
         run: |
@@ -28,18 +26,15 @@ jobs:
           .venv\Scripts\python -m pip install --upgrade pip
           .venv\Scripts\python -m pip install -r requirements.txt pyinstaller
         shell: pwsh
-
       - name: Build EXE with PyInstaller
         working-directory: app
         run: |
           .venv\Scripts\pyinstaller --noconfirm --onefile --name RhinoSimPro main.py
         shell: pwsh
-
       - name: Install Inno Setup (choco)
         run: |
           choco install innosetup -y
         shell: pwsh
-
       - name: Prepare installer build folder
         run: |
           Remove-Item -Recurse -Force installer\build -ErrorAction SilentlyContinue
@@ -47,5 +42,15 @@ jobs:
           Copy-Item -Path app\dist\RhinoSimPro.exe -Destination installer\build\RhinoSimPro.exe -Force
           Copy-Item -Path installer\RhinoSimPro.iss -Destination installer\build\RhinoSimPro.iss -Force
         shell: pwsh
-
-      - name: Build Instal
+      - name: Build Installer with Inno Setup (ISCC)
+        working-directory: installer\build
+        run: |
+          & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' 'RhinoSimPro.iss'
+        shell: pwsh
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: RhinoSimPro-artifacts
+          path: |
+            app\dist\RhinoSimPro.exe
+            installer\build\RhinoSimProInstaller.exe
