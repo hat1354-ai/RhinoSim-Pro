@@ -13,7 +13,7 @@ jobs:
       EXE_NAME: 'RhinoSimPro.exe'
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies & PyInstaller (app)
+      - name: Install dependencies & PyInstaller
         working-directory: app
         run: |
           python -m venv .venv
@@ -35,7 +35,7 @@ jobs:
           .venv\Scripts\pyinstaller --noconfirm --onefile --name RhinoSimPro main.py
         shell: pwsh
 
-      - name: Install Inno Setup (choco)
+      - name: Install Inno Setup via Chocolatey
         run: |
           choco install innosetup -y
         shell: pwsh
@@ -48,7 +48,7 @@ jobs:
           Copy-Item -Path installer/RhinoSimPro.iss -Destination installer/build/RhinoSimPro.iss -Force
         shell: pwsh
 
-      - name: Build Installer with Inno Setup (ISCC)
+      - name: Build Installer with Inno Setup
         working-directory: installer/build
         run: |
           & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' 'RhinoSimPro.iss'
