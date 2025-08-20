@@ -1,4 +1,4 @@
-name: Build Windows EXE + Installer
+name: Build Windows EXE + Installer with Debug Logs
 
 on:
   push:
@@ -23,31 +23,40 @@ jobs:
 
       - name: Install dependencies & PyInstaller
         run: |
+          echo "=== STEP 1: Setting up virtual environment ==="
           cd app
           python -m venv .venv
+          echo "=== STEP 2: Upgrading pip ==="
           .venv\Scripts\python -m pip install --upgrade pip
+          echo "=== STEP 3: Installing requirements ==="
           .venv\Scripts\python -m pip install -r requirements.txt pyinstaller
         shell: pwsh
 
       - name: Build EXE with PyInstaller
         run: |
+          echo "=== STEP 4: Building EXE ==="
           cd app
           .venv\Scripts\pyinstaller --noconfirm --onefile --name RhinoSimPro main.py
+          if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed!" }
         shell: pwsh
 
       - name: Install Inno Setup via Chocolatey
         run: |
+          echo "=== STEP 5: Installing Inno Setup ==="
           choco install innosetup -y
         shell: pwsh
 
       - name: Prepare installer build folder
         run: |
+          echo "=== STEP 6: Preparing installer folder ==="
           Remove-Item -Recurse -Force installer/build -ErrorAction SilentlyContinue
           New-Item -ItemType Directory -Force -Path installer/build
           Copy-Item -Path app/dist/RhinoSimPro.exe -Destination installer/build/RhinoSimPro.exe -Force
           Copy-Item -Path installer/RhinoSimPro.iss -Destination installer/build/RhinoSimPro.iss -Force
           cd installer/build
+          echo "=== STEP 7: Building installer ==="
           & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' 'RhinoSimPro.iss'
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed!" }
         shell: pwsh
 
       - name: Upload artifacts
