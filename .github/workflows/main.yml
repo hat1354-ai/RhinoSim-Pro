@@ -21,18 +21,30 @@ jobs:
 
     - name: STEP 1: Setting up virtual environment
       run: |
+        echo "=== STEP 1: Setting up virtual environment ==="
         python -m venv .venv
         .venv\Scripts\python -m pip install --upgrade pip
         .venv\Scripts\python -m pip install -r requirements.txt pyinstaller
 
     - name: STEP 2: Build EXE with PyInstaller
       run: |
+        echo "=== STEP 2: Building EXE with PyInstaller ==="
         .venv\Scripts\pyinstaller --noconfirm --onefile --name RhinoSimPro main.py
 
-    - name: STEP 3: List EXE
+    - name: STEP 3: List EXE output
       run: |
+        echo "=== STEP 3: Listing dist folder ==="
         dir dist
 
     - name: STEP 4: Build Installer (Inno Setup)
       run: |
+        echo "=== STEP 4: Building Installer with Inno Setup ==="
         "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\RhinoSimPro.iss
+
+    - name: STEP 5: Upload EXE and Installer as Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: RhinoSimPro-Build
+        path: |
+          dist\RhinoSimPro.exe
+          Output\setup.exe
