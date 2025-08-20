@@ -56,15 +56,13 @@ jobs:
           }
 
       - name: Build Installer (Inno Setup)
-        run: >
-          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\RhinoSimPro.iss
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "installer\RhinoSimPro.iss"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: RhinoSimPro-Installer
           path: |
-            dist\RhinoSimPro.exe
-            installer\Output\Setup.exe      path: |
             dist\RhinoSimPro.exe
             installer\Output\Setup.exe
