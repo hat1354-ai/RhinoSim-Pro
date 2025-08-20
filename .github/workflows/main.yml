@@ -65,4 +65,6 @@ jobs:
           name: RhinoSimPro-Installer
           path: |
             dist\RhinoSimPro.exe
+            installer\Output\Setup.exe      path: |
+            dist\RhinoSimPro.exe
             installer\Output\Setup.exe
