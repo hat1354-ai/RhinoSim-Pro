@@ -17,6 +17,18 @@ jobs:
       - name: Debug repo structure
         run: Get-ChildItem -Recurse
 
+      - name: Check main.py exists
+        run: |
+          if (!(Test-Path "main.py")) {
+            Write-Error "main.py not found in repository root."
+          }
+
+      - name: Check requirements.txt exists
+        run: |
+          if (!(Test-Path "requirements.txt")) {
+            Write-Error "requirements.txt not found in repository root."
+          }
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -36,6 +48,12 @@ jobs:
 
       - name: Install Inno Setup
         run: choco install innosetup --yes
+
+      - name: Check Inno Setup script exists
+        run: |
+          if (!(Test-Path "installer\RhinoSimPro.iss")) {
+            Write-Error "installer\RhinoSimPro.iss not found."
+          }
 
       - name: Build Installer (Inno Setup)
         run: >
