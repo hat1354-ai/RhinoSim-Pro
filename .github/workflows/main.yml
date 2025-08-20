@@ -1,4 +1,4 @@
-c:\Users\rcc-2\Desktop\RhinoSim-Pro-GHA\.github\workflows\windows-build.ymlname: Build Windows EXE + Installer
+name: Build Windows EXE + Installer
 
 on:
   push:
@@ -58,5 +58,8 @@ jobs:
         with:
           name: RhinoSimPro-artifacts
           path: |
+            app\dist\RhinoSimPro.exe
+            installer\build\RhinoSimProInstaller.exe
+     path: |
             app\dist\RhinoSimPro.exe
             installer\build\RhinoSimProInstaller.exe
