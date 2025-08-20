@@ -11,6 +11,7 @@ jobs:
     env:
       PYTHON_VERSION: '3.10'
       EXE_NAME: 'RhinoSimPro.exe'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,19 +48,4 @@ jobs:
           Copy-Item -Path installer\RhinoSimPro.iss -Destination installer\build\RhinoSimPro.iss -Force
         shell: pwsh
 
-      - name: Build Installer with Inno Setup (ISCC)
-        working-directory: installer\build
-        run: |
-          & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' 'RhinoSimPro.iss'
-        shell: pwsh
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: RhinoSimPro-artifacts
-          path: |
-            app\dist\RhinoSimPro.exe
-            installer\build\RhinoSimProInstaller.exe
-     path: |
-            app\dist\RhinoSimPro.exe
-            installer\build\RhinoSimProInstaller.exe
+      - name: Build Instal
