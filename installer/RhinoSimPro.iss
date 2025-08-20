@@ -7,7 +7,7 @@ OutputDir=installer\Output
 OutputBaseFilename=Setup
 
 [Files]
-Source: "dist\RhinoSimPro.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\RhinoSimPro.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\RhinoSimPro"; Filename: "{app}\RhinoSimPro.exe"
