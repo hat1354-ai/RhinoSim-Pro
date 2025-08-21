@@ -66,6 +66,6 @@ jobs:
           path: |
             dist\RhinoSimPro.exe
             installer\Output\Setup.exe
-            if __name__ == "__main__":
-    print("برنامه اجرا شد")
-    input("برای خروج Enter را بزنید...")
+            if __name__ == "__main__": 
+            print("برنامه اجرا شد")
+            input("برای خروج Enter را بزنید...")
